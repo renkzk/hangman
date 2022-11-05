@@ -18,12 +18,17 @@ function App() {
     (letter) => !wordToGuess.includes(letter)
   )
 
+  const isLoser = incorrectLetters.length >= 6
+  const isWinner = wordToGuess
+    .split("")
+    .every((letter) => guessedLetters.includes(letter))
+
   const addGuessedLetter = useCallback(
     (letter: string) => {
-      if (guessedLetters.includes(letter)) return
+      if (guessedLetters.includes(letter) || isWinner || isLoser) return
       setGuessedLetters((currentState) => [...currentState, letter])
     },
-    [guessedLetters]
+    [guessedLetters, isWinner, isLoser]
   )
 
   useEffect(() => {
@@ -44,13 +49,15 @@ function App() {
 
   return (
     <AppContainer>
-      <div className="game-info">You Won.</div>
+      {isWinner && <h1 className="game-info winner">You Won! - Refresh to play again</h1>}
+      {isLoser && <h1 className="game-info loser">You Lost! - Refresh to play again</h1>}
       <Hangman numberOfWrongGuesses={incorrectLetters.length} />
-      <Word wordToGuess={wordToGuess} guessedLetters={guessedLetters} />
+      <Word wordToGuess={wordToGuess} guessedLetters={guessedLetters} isLoser={isLoser} />
       <Keyboard
         correctLetters={guessedLetters.filter((letter) => wordToGuess.includes(letter))}
         incorrectLetters={incorrectLetters}
         addGuessedLetter={addGuessedLetter}
+        disabled={isWinner || isLoser}
       />
     </AppContainer>
   )
@@ -63,6 +70,22 @@ const AppContainer = styled.div`
   gap: 2rem;
   margin: 0 auto;
   align-items: center;
+  position: relative;
+  font-family: monospace;
+
+  .game-info {
+    position: absolute;
+    top: 20%;
+    background-color: #000000e7;
+    padding: 5rem;
+    z-index: 1;
+    &.winner {
+      color: #0fbb0f;
+    }
+    &.loser {
+      color: red;
+    }
+  }
 `
 
 export default App

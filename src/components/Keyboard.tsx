@@ -33,12 +33,14 @@ type Props = {
   correctLetters: string[]
   incorrectLetters: string[]
   addGuessedLetter: (letter: string) => void
+  disabled?: boolean
 }
 
 export default function Keyboard({
   correctLetters,
   incorrectLetters,
   addGuessedLetter,
+  disabled,
 }: Props) {
   return (
     <KeyboardContainer>
@@ -52,6 +54,8 @@ export default function Keyboard({
                 ? "key-btn correct"
                 : isIncorrect
                 ? "key-btn incorrect"
+                : disabled
+                ? "key-btn disabled"
                 : "key-btn"
             }
             key={key}
@@ -96,6 +100,10 @@ const KeyboardContainer = styled.div`
 
     &:hover {
       background-color: hsl(200, 100%, 50%);
+    }
+
+    &.disabled {
+      pointer-events: none;
     }
   }
 `

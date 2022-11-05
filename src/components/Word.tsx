@@ -3,9 +3,10 @@ import styled from "styled-components"
 type Props = {
   wordToGuess: string
   guessedLetters: string[]
+  isLoser?: boolean
 }
 
-export default function Word({ wordToGuess, guessedLetters }: Props) {
+export default function Word({ wordToGuess, guessedLetters, isLoser }: Props) {
   return (
     <WordContainer>
       {wordToGuess.split("").map((letter, index) => {
@@ -13,7 +14,9 @@ export default function Word({ wordToGuess, guessedLetters }: Props) {
           <span className="letter" key={index}>
             <span
               style={{
-                visibility: guessedLetters.includes(letter) ? "visible" : "hidden",
+                visibility:
+                  guessedLetters.includes(letter) || isLoser ? "visible" : "hidden",
+                color: !guessedLetters.includes(letter) && isLoser ? "red" : "#0d964d",
               }}
             >
               {letter}
