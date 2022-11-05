@@ -1,8 +1,13 @@
 import styled from "styled-components"
 
-export default function Hangman() {
+type HangmanProps = {
+  numberOfWrongGuesses: number
+}
+
+export default function Hangman({ numberOfWrongGuesses }: HangmanProps) {
   const HEAD = (
     <div
+      key={"head"}
       style={{
         width: "50px",
         height: "50px",
@@ -14,9 +19,9 @@ export default function Hangman() {
       }}
     />
   )
-
   const BODY = (
     <div
+      key={"body"}
       style={{
         width: "10px",
         height: "100px",
@@ -27,15 +32,15 @@ export default function Hangman() {
       }}
     />
   )
-
   const LEFT_ARM = (
     <div
+      key={"left-arm"}
       style={{
         width: "100px",
         height: "10px",
         background: "black",
         position: "absolute",
-        right: "-68%",
+        right: "-69%",
         top: "160px",
         rotate: "50deg",
       }}
@@ -43,12 +48,13 @@ export default function Hangman() {
   )
   const RIGHT_ARM = (
     <div
+      key={"right-arm"}
       style={{
         width: "100px",
         height: "10px",
         background: "black",
         position: "absolute",
-        right: "-44%",
+        right: "-43%",
         top: "160px",
         rotate: "-50deg",
       }}
@@ -56,6 +62,7 @@ export default function Hangman() {
   )
   const LEFT_LEG = (
     <div
+      key={"left-leg"}
       style={{
         width: "120px",
         height: "10px",
@@ -69,6 +76,7 @@ export default function Hangman() {
   )
   const RIGHT_LEG = (
     <div
+      key={"right-leg"}
       style={{
         width: "120px",
         height: "10px",
@@ -80,15 +88,10 @@ export default function Hangman() {
       }}
     />
   )
-
+  const BODY_PARTS = [HEAD, BODY, LEFT_ARM, RIGHT_ARM, LEFT_LEG, RIGHT_LEG]
   return (
     <HangmanContainer>
-      {HEAD}
-      {BODY}
-      {LEFT_ARM}
-      {RIGHT_ARM}
-      {LEFT_LEG}
-      {RIGHT_LEG}
+      {BODY_PARTS.slice(0, numberOfWrongGuesses)}
       <div className="top-bar" />
       <div className="rope-bar" />
       <div className="middle-bar" />
