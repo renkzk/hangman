@@ -47,10 +47,31 @@ function App() {
     }
   }, [guessedLetters])
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const key = e.key
+      if (key !== "Enter") return
+
+      e.preventDefault()
+      setGuessedLetters([])
+      setWordToGuess(getRandomWord)
+    }
+
+    document.addEventListener("keypress", handler)
+
+    return () => {
+      document.removeEventListener("keypress", handler)
+    }
+  }, [])
+
   return (
     <AppContainer>
-      {isWinner && <h1 className="game-info winner">You Won! - Refresh to play again</h1>}
-      {isLoser && <h1 className="game-info loser">You Lost! - Refresh to play again</h1>}
+      {isWinner && (
+        <h1 className="game-info winner">You Won! - Press "Enter" to restart</h1>
+      )}
+      {isLoser && (
+        <h1 className="game-info loser">You Lost! - Press "Enter" to restart</h1>
+      )}
       <Hangman numberOfWrongGuesses={incorrectLetters.length} />
       <Word wordToGuess={wordToGuess} guessedLetters={guessedLetters} isLoser={isLoser} />
       <Keyboard
